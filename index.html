@@ -109,6 +109,29 @@
       transition: transform 0.18s ease-out;
     }
 
+    /* ---------- Mobile tweaks ---------- */
+    @media (max-width: 600px) {
+      body {
+        padding: 0 16px;
+      }
+      .card {
+        max-width: 100%;
+      }
+      .card h1 {
+        font-size: 1.15rem;
+        margin-bottom: 24px;
+      }
+      .buttons {
+        gap: 12px;
+      }
+      .btn {
+        font-size: 1rem;
+        padding: 12px 28px;
+        min-width: 120px;
+        min-height: 46px;
+      }
+    }
+
     /* Heartbeat animation on Yes button */
     @keyframes heartbeat {
       0%, 100% { transform: scale(1); }

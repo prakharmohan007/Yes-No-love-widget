@@ -17,13 +17,13 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 50%, #f48fb1 100%);
+      background: #ffffff;
       overflow: hidden;
       user-select: none;
       -webkit-user-select: none;
     }
 
-    /* ---------- Background floating hearts ---------- */
+    /* ---------- Background floating petals ---------- */
     .bg-hearts {
       position: fixed;
       inset: 0;
@@ -36,38 +36,27 @@
       bottom: -40px;
       font-size: 20px;
       animation: floatUp linear infinite;
-      opacity: 0.25;
+      opacity: 0.18;
     }
     @keyframes floatUp {
       0%   { transform: translateY(0) rotate(0deg); opacity: 0.25; }
       100% { transform: translateY(-110vh) rotate(720deg); opacity: 0; }
     }
 
-    /* ---------- Card ---------- */
+    /* ---------- Main content (no box) ---------- */
     .card {
       position: relative;
       z-index: 1;
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(12px);
-      border-radius: 24px;
-      padding: 48px 36px 40px;
-      max-width: 420px;
-      width: 90vw;
       text-align: center;
-      box-shadow: 0 20px 60px rgba(233, 30, 99, 0.18),
-                  0 4px 16px rgba(0, 0, 0, 0.06);
+      padding: 0 24px;
+      max-width: 520px;
+      width: 100%;
       transition: opacity 0.5s, transform 0.5s;
     }
     .card.hidden {
       opacity: 0;
       transform: scale(0.9);
       pointer-events: none;
-    }
-
-    .card .emoji-top {
-      font-size: 56px;
-      margin-bottom: 12px;
-      animation: pulse 1.6s ease-in-out infinite;
     }
 
     .card h1 {
@@ -117,7 +106,7 @@
       background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
       color: #757575;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      transition: none; /* instant repositioning */
+      transition: transform 0.18s ease-out;
     }
 
     /* Heartbeat animation on Yes button */
@@ -200,10 +189,9 @@
   <!-- Ambient background hearts -->
   <div class="bg-hearts" id="bgHearts"></div>
 
-  <!-- Question card -->
+  <!-- Main content -->
   <div class="card" id="card">
-    <div class="emoji-top">💕</div>
-    <h1>I am sorry, I love you.<br/>Can I kiss you?</h1>
+    <h1>I love you.<br/>Can I hug you?</h1>
     <div class="buttons">
       <button class="btn btn-yes" id="yesBtn">Yes</button>
       <button class="btn btn-no"  id="noBtn">No</button>
@@ -221,13 +209,13 @@
     /* ======== Background ambient hearts ======== */
     (function createBgHearts() {
       const container = document.getElementById('bgHearts');
-      const emojis = ['❤️', '💕', '💗', '💖', '💘'];
-      for (let i = 0; i < 15; i++) {
+      const emojis = ['🌹', '🌸', '💮', '🌺'];
+      for (let i = 0; i < 8; i++) {
         const span = document.createElement('span');
         span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
         span.style.left = Math.random() * 100 + 'vw';
-        span.style.fontSize = (14 + Math.random() * 18) + 'px';
-        span.style.animationDuration = (6 + Math.random() * 8) + 's';
+        span.style.fontSize = (16 + Math.random() * 16) + 'px';
+        span.style.animationDuration = (9 + Math.random() * 8) + 's';
         span.style.animationDelay = (Math.random() * 10) + 's';
         container.appendChild(span);
       }
@@ -235,24 +223,17 @@
 
     /* ======== No-button dodge logic ======== */
     const noBtn  = document.getElementById('noBtn');
-    const MARGIN = 16; // pixels from viewport edges
 
     function dodgeNo() {
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
-      const bw = noBtn.offsetWidth;
-      const bh = noBtn.offsetHeight;
+      const maxDistance = 140;
+      const minDistance = 70;
+      const angle = Math.random() * Math.PI * 2;
+      const distance = minDistance + Math.random() * (maxDistance - minDistance);
 
-      const maxX = vw - bw - MARGIN;
-      const maxY = vh - bh - MARGIN;
+      const offsetX = Math.cos(angle) * distance;
+      const offsetY = Math.sin(angle) * distance;
 
-      const randX = MARGIN + Math.random() * (maxX - MARGIN);
-      const randY = MARGIN + Math.random() * (maxY - MARGIN);
-
-      noBtn.style.position = 'fixed';
-      noBtn.style.left = randX + 'px';
-      noBtn.style.top  = randY + 'px';
-      noBtn.style.zIndex = '10';
+      noBtn.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
     }
 
     noBtn.addEventListener('mouseover',  dodgeNo);
